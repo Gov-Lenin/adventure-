@@ -1,0 +1,121 @@
+import random, time, sys
+luck = (random.randint(1,6) + 6)
+health = (random.randint(2,6) + 12)
+skill = (random.randint(2,6) + 6)
+equipment = []
+CurrentEnemyHealth = 0
+YorN = 0
+oneortwo = 0
+oneortwoorthree = 0
+
+def death():
+    printslow("you ded bro")
+    
+def Checkoneortwo():
+    global oneortwo
+    while oneortwo != "1" and oneortwo != "2":
+                printslow("Please enter 1 or 2: \n")
+                oneortwo =  input()
+
+def Checkoneortwoorthree():
+    global oneortwoorthree
+    while oneortwoorthree != "1" and oneortwoorthree != "2" and oneortwoorthree != "3":
+                printslow("Please enter 1, 2 or 3: \n")
+                oneortwoorthree =  input()
+                
+def CheckYorN():
+    global YorN
+    while YorN != "Yes" and YorN != "No":
+                printslow("Please enter Yes or No: \n")
+                YorN =  input()
+
+def printslow(str):
+    for letter in str:
+        sys.stdout.write(letter)
+        sys.stdout.flush()
+        time.sleep(0.1)
+                
+def fight(enemyskill,EnemyHealth,Enemy):
+    global health, skill, YorN, luck
+    CurrentEnemyHealth = EnemyHealth
+    EnemyName = Enemy
+    EnemySkill = enemyskill
+    time.sleep(2)
+    printslow("You are in combat with the " + EnemyName + "! \n")
+    while EnemyHealth > 0 and health > 0:
+        enemyroll = (random.randint(1,6) + EnemySkill)
+        roll = (random.randint(1,6) + skill)
+        time.sleep(3)
+        if roll > enemyroll:
+            youhitthe = ["You hit the ", "You manage to hit the ", "You strike the "]
+            printslow(youhitthe[random.randint(0,2)] + EnemyName + "! \n")
+            CurrentEnemyHealth = CurrentEnemyHealth - 2
+            time.sleep(2)
+            printslow("Would you like to test your luck? If you are lucky you will deal extra damage to the target, but beware! The more you test your luck the less likely you are to get lucky, and the results could be disastrous! (Enter Yes or No) \n")
+            YorN = input()
+            CheckYorN()
+            if YorN == "Yes":
+                LuckRoll = (random.randint(1,6) + random.randint(1,6))
+                if LuckRoll <= luck:
+                    time.sleep(2)
+                    printslow("You are lucky and deal extra damage to the target! \n")
+                    CurrentEnemyHealth = CurrentEnemyHealth - 2
+                else:
+                    time.sleep(2)
+                    printslow("You are unlucky, and your blow deals less damage. \n")
+                    CurrentEnemyHealth = CurrentEnemyHealth + 1
+                luck -= 1
+        elif roll < enemyroll:
+            time.sleep(2)
+            thehitsyou = [" hits you!", " manages to strike you.", " strikes you!"]
+            printslow("The " + EnemyName + thehitsyou[random.randint(0,2)])
+            health = health - 2
+            if health <= 0:
+                death()
+            time.sleep(2)
+            printslow("Would you like to test your luck to see if you can avoid most of the damage? remember if you test your luck too much you will be less lucky in future. (Enter Yes or No) \n")
+            YorN = input()
+            CheckYorN()
+            if YorN == "Yes":
+                LuckRoll = (random.randint(1,6) + random.randint(1,6))
+                if LuckRoll >= luck:
+                    time.sleep(2)
+                    printslow("You manage to avoid some of the damage! \n")
+                    health = health + 1
+                else:
+                    time.sleep(2)
+                    printslow("You fail to dodge the attack, taking extra damage. \n")
+                    health = health - 1
+                    if health <= 0:
+                        death()
+                luck -= 1
+        else:
+            time.sleep(2)
+            printslow("You both avoid each others blows. \n")
+    printslow("You defeat the " + EnemyName + " with " + str(health) + "left. \n")
+    
+def start():
+    global oneortwoorthree
+    printslow("Welcome to the forest of doom... \n Before you begin your journey we must determine the strengths and weaknesses of your character. Your skill is " + str(skill) + " and your health is " + str(health) + ".")
+    time.sleep(4)
+    printslow("You may also choose one of three potions: A skill potion which restores your skill to maximum if it has been reduced, a health potion that restores your health to maximum or a luck potion, which increases your luck in future. \n If you would like the skill potion, enter 1. If you would like the health potion, enter 2. I you would like the luck potion, enter 3. \n")
+    oneortwoorthree = input()
+    Checkoneortwoorthree()
+    if oneortwoorthree == "1":
+        equipment.append("skillpot")
+        printslow("Skill potion has been added to equipment.")
+    elif oneortwoorthree == "2":
+        equipment.append("healthpot")
+        printslow("Health potion has been added to your equipment.")
+    else:
+        equipment.append("luckpot")
+        printslow("Luck potion has been added to your inventory.")
+    background()
+    
+def background():
+    printslow("You are an adventurer, a sword for hire, and have been roaming the northern borderlands of your kingdom. Having always spurned the dullness of village life, you now wander the lands in search of wealth and danger. Despite the long walks and rough outdoor life you are content with your unknown destiny. The world holds no fears for you as you are a skillful warrior, well practiced in the art of slaying men and beasts with your trusty sword. Not once during the last ten days since entering the northern borderlands have you set your eyes upon another person. This does not worry you at all, as you are content with your own company and enjoy the slow, sunny days hunting, eating and sleeping.")
+    printslow("It is evening, and having feasted on a dinner of rabbit, spit-roasted on an open fire")
+
+fight(7,3,"First KILLER BEES")
+fight(8,4,"Second KILLER BEES")
+fight(7,4,"Third KILLER BEES")
